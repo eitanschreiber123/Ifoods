@@ -82,7 +82,6 @@ const changeInfo = () => {
                 <p>One time</p>
                 {activeUser.purchases.filter(p => p.type == "one time").map(p => <div>
                     <p>{p.date}</p>
-                    <p>{p.type}</p>
                     <p>{p.price}</p>
                     <div>
                         {
@@ -98,7 +97,7 @@ const changeInfo = () => {
                 <p>Subscription</p>
                 {activeUser.purchases.filter(p => p.type == "subscription").map(p => <div>
                     <p>{p.date}</p>
-                    <p>{p.type}</p>
+                    <p>{p.subscription}</p>
                     <p>{p.price}</p>
                     <div>
                         {

@@ -14,6 +14,7 @@ export default function Home() {
   const [price, setPrice] = useState([]);
   const [purchaseType, setPurchaseType] = useState("");
   const [purchaseDate, setDate] = useState(null)
+  const [sub, setSub] = useState(null)
   const [address, setAddress] = (activeUser && activeUser.address) ? useState(activeUser.address) : useState('');
   const [cardNumber, setCardNumber] = (activeUser && activeUser.payment) ? useState(activeUser.payment.number) : useState('');
   const [expiryDate, setExpiryDate] = (activeUser && activeUser.payment) ? useState(activeUser.payment.date) : useState('');
@@ -22,6 +23,10 @@ export default function Home() {
     const items = JSON.parse(localStorage.getItem("chosenItems")) || [];
     const price = JSON.parse(localStorage.getItem("price")) || 0;
     const purchase = localStorage.getItem("purchaseType") || "one time";
+    if (localStorage.getItem("purchaseType") == "subscription") {
+      const subscription = localStorage.getItem("subscription")
+      setSub(subscription)
+    }
     setChosenItems(items);
     setPurchaseType(purchase);
     setPrice(price);
@@ -52,6 +57,7 @@ export default function Home() {
           },
           purchases: [...u.purchases, {
             date: purchaseDate,
+            subscription: sub || null,
             type: purchaseType,
             items: chosenItems,
             price
@@ -63,6 +69,7 @@ export default function Home() {
     localStorage.removeItem("chosenItems");
     localStorage.removeItem("purchaseType");
     localStorage.removeItem("price");
+    localStorage.removeItem("subscription");
     localStorage.setItem("users", updatedUsers)
     setActiveUser(updatedUsers.filter(u => u.email == activeUser.email && u.password == activeUser.password)[0])
     router.push("/");

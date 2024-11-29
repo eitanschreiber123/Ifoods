@@ -16,6 +16,7 @@ export default function Home() {
       {item:'Shredded', weight:0, image:'shredded'},
       {item:'Spread', weight:0, image:'spread_1'}
     ])
+    const [sub, setSub] = useState("weekly")
     const router = useRouter();
     const onCheckout = () => {
       // Save chosen items and purchase type to localStorage
@@ -24,6 +25,9 @@ export default function Home() {
       }
       localStorage.setItem("chosenItems", JSON.stringify(items.filter(i => i.weight > 0).map(i =>{ return {item: i.item, weight: i.weight, price:i.weight * .45}})));
       localStorage.setItem("purchaseType", purchase);
+      if (purchase == "subscription") {
+        localStorage.setItem("subscription", sub);
+      }
       localStorage.setItem("price", items.filter(i => i.weight > 0).map(i =>{ return {price:i.weight * .45}}).map(c => c.price).reduce((a, b) => a + b));
       router.push("/checkout", "/checkout"); // Redirect to the checkout page
     };
@@ -62,6 +66,10 @@ export default function Home() {
           ])
           }}>Subscription</p>
       </div>
+      {purchase == "subscription"  && <div style={{display:'flex'}}>
+        <p style={{padding: '20px', borderBottom: sub == 'weekly' ? '1px solid blue' : 'none' }} onClick={()=>setSub("weekly")}>Weekly</p>
+        <p style={{padding: '20px', borderBottom: sub == 'monthly' ? '1px solid blue' : 'none' }} onClick={()=>setSub("monthly")}>Monthly</p>
+      </div>}
       <section style={{display:'flex',flexWrap:'wrap',justifyContent:'center'}}>
         {items.map(i => <div style={{display:'flex',flexDirection:'column',alignItems:'center'}}>
         <Image
